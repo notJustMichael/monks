@@ -4,6 +4,8 @@ import com.notjustmichael.domain.employee.Employee;
 import com.notjustmichael.repository.employee.EmployeeRepository;
 import com.notjustmichael.repository.employee.impl.EmployeeRepositoryImpl;
 import com.notjustmichael.service.employee.EmployeeService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
@@ -11,6 +13,8 @@ import java.util.Set;
 @Service("EmployeeServiceImpl")
 public class EmployeeServiceImpl implements EmployeeService {
 
+    @Autowired
+    @Qualifier("EmployeeRepository")
 
     private EmployeeRepository employeeRepository;
     private static EmployeeService employeeService = null;

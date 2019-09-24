@@ -11,10 +11,9 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Set;
 
 @RestController
 @RequestMapping("/monks/employee")
@@ -32,7 +31,8 @@ public class EmployeeController {
             responseObj.setResponseCode(HttpStatus.PRECONDITION_FAILED.toString());
             responseObj.setResponseDescription("Please provide first and/or last name!");
         } else {
-
+            Employee savedEmp = saveEmployee(employee);
+            responseObj.setResponse(savedEmp);
         }
         return ResponseEntity.ok(responseObj);
     }
@@ -40,6 +40,14 @@ public class EmployeeController {
     private Employee saveEmployee(NewEmployee employee) {
         Employee emp = EmployeeFactory.buildEmployee(employee.getPhoneNumber(), employee.getFirstName(), employee.getLastName());
         return service.create(emp);
+    }
+
+    @GetMapping(value = "/getall", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity getAll(){
+        ResponseObj responseObj = ResponseObjFactory.buildGenericResponseObj(HttpStatus.OK.toString(), "Success");
+        Set<Employee> employees = service.getAll();
+        responseObj.setResponse(employees);
+        return ResponseEntity.ok(responseObj);
     }
 
 }

@@ -12,8 +12,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 public class MonksSecurity extends WebSecurityConfigurerAdapter {
 
-    private static final String DRIVER_ROLE = "USER";
-    private static final String MANAGER_ROLE = "ADMIN";
+    private static final String USER_ROLE = "USER";
+    private static final String ADMIN_ROLE = "ADMIN";
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth)
@@ -21,12 +21,12 @@ public class MonksSecurity extends WebSecurityConfigurerAdapter {
         auth
                 .inMemoryAuthentication()
                 .withUser("Michael")
-                .password(encoder().encode("997963"))
-                .roles(DRIVER_ROLE)
+                .password(encoder().encode("99797"))
+                .roles(USER_ROLE)
                 .and()
                 .withUser("Andrew")
                 .password(encoder().encode("88181"))
-                .roles(DRIVER_ROLE, MANAGER_ROLE);
+                .roles(USER_ROLE, ADMIN_ROLE);
     }
 
     @Override
@@ -35,7 +35,9 @@ public class MonksSecurity extends WebSecurityConfigurerAdapter {
                 .httpBasic()
                 .and()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.POST, "/payroll/lookup/**/create/**").hasRole(MANAGER_ROLE)
+                .antMatchers(HttpMethod.GET, "/monks/order/getall/").hasRole(USER_ROLE)
+                .antMatchers(HttpMethod.POST, "/monks/employee/create/**").hasRole(ADMIN_ROLE)
+                .antMatchers(HttpMethod.GET, "/monks/**/getall/**").hasRole(ADMIN_ROLE)
                 .and()
                 .csrf().disable()
                 .formLogin().disable();
