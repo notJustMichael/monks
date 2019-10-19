@@ -1,4 +1,4 @@
-package com.notjustmichael.controller.employee;
+package com.notjustmichael.security.employee;
 
 import com.notjustmichael.domain.employee.Employee;
 import com.notjustmichael.domain.ResponseObj;

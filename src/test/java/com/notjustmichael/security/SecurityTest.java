@@ -1,4 +1,4 @@
-package com.notjustmichael.controller.employee;
+package com.notjustmichael.security;
 
 //import org.jboss.arquillian.container.test.api.Deployment;
 //import org.jboss.arquillian.junit.Arquillian;
@@ -17,12 +17,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @RunWith(SpringRunner.class)
-public class EmployeeControllerTest {
+public class SecurityTest {
 
     @Autowired
     private TestRestTemplate restTemplate;
@@ -62,5 +62,17 @@ public class EmployeeControllerTest {
                 .postForEntity(baseURL+"/create/",emp,String.class);
         System.out.println(result.getBody());
         assertEquals(HttpStatus.OK, result.getStatusCode());
+    }
+    @Test
+    public void getEmployee_fail_incorrect_password() {
+        NewEmployee emp = new NewEmployee();
+        emp.setFirstName("Michael");
+        emp.setLastName("Thomas");
+        emp.setPhoneNumber("19216881");
+        ResponseEntity result = restTemplate.withBasicAuth("Andrew","881818")
+                .getForEntity(baseURL+"/getall/",String.class);
+        //.postForEntity(baseURL+"/create/",emp, String.class);
+        System.out.println(result.getBody());
+        assertEquals(HttpStatus.UNAUTHORIZED, result.getStatusCode());
     }
 }
