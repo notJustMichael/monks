@@ -40,7 +40,7 @@ public class MonksSecurity extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/monks/**/getall/**").hasRole(ADMIN_ROLE)
                 .and()
                 .csrf().disable()
-                .formLogin().disable();
+                .formLogin();
     }
 
     @Bean
