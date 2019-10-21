@@ -35,9 +35,11 @@ public class MonksSecurity extends WebSecurityConfigurerAdapter {
                 .httpBasic()
                 .and()
                 .authorizeRequests()
+                .antMatchers("/monks/").hasRole(USER_ROLE)
+                .antMatchers("/monks/").hasRole(ADMIN_ROLE)
                 .antMatchers(HttpMethod.GET, "/monks/order/getall/").hasRole(USER_ROLE)
                 .antMatchers(HttpMethod.POST, "/monks/employee/create/**").hasRole(ADMIN_ROLE)
-                .antMatchers(HttpMethod.GET, "/monks/**/getall/**").hasRole(ADMIN_ROLE)
+                .antMatchers(HttpMethod.GET, "/monks/**/getall/").hasRole(ADMIN_ROLE)
                 .and()
                 .csrf().disable()
                 .formLogin();
